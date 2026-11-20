@@ -1,0 +1,230 @@
+ <title>랜덤 점심 메뉴 추천 프로그램</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f1;
+            margin: 0;
+            padding: 30px 15px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #245b43;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+        }
+
+        .recommend-box {
+            background: #eaf3ec;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        #result {
+            font-size: 26px;
+            font-weight: bold;
+            color: #245b43;
+            margin: 15px 0;
+        }
+
+        button {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            background: #245b43;
+            color: white;
+        }
+
+        button:hover {
+            background: #397858;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 8px;
+            margin: 12px 0 20px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        h3 {
+            color: #245b43;
+            margin-top: 25px;
+        }
+
+        #menuList {
+            list-style: none;
+            padding: 0;
+        }
+
+        #menuList li {
+            background: #f5f7f5;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+        }
+
+        #count {
+            text-align: right;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🍽️ 오늘 뭐 먹지?</h1>
+    <p class="subtitle">랜덤 점심 메뉴 추천 프로그램</p>
+
+    <div class="recommend-box">
+        <h3>오늘의 추천 메뉴</h3>
+
+        <div id="result">
+            메뉴를 추천받아 보세요!
+        </div>
+
+        <button onclick="recommendMenu()">
+            🎲 랜덤 메뉴 추천받기
+        </button>
+    </div>
+
+    <h3>➕ 새로운 메뉴 추가</h3>
+
+    <div class="input-area">
+        <input
+            type="text"
+            id="newMenu"
+            placeholder="추가할 메뉴 이름 입력"
+            onkeydown="if(event.key === 'Enter') addMenu()"
+        >
+
+        <button onclick="addMenu()">추가</button>
+    </div>
+
+    <h3>📋 전체 메뉴 목록</h3>
+
+    <ul id="menuList"></ul>
+
+    <p id="count"></p>
+
+</div>
+
+<script>
+
+    // 기본 점심 메뉴 리스트
+    let lunchMenuList = [
+        "제육볶음",
+        "김치찌개",
+        "돈가스",
+        "짜장면",
+        "초밥",
+        "햄버거",
+        "쌀국수",
+        "샐러드"
+    ];
+
+    // 랜덤 메뉴 추천 함수
+    function recommendMenu() {
+
+        if (lunchMenuList.length === 0) {
+            document.getElementById("result").textContent =
+                "등록된 메뉴가 없습니다.";
+            return;
+        }
+
+        const randomIndex = Math.floor(
+            Math.random() * lunchMenuList.length
+        );
+
+        const selectedMenu = lunchMenuList[randomIndex];
+
+        document.getElementById("result").textContent =
+            "🎉 " + selectedMenu;
+    }
+
+    // 새로운 메뉴 추가 함수
+    function addMenu() {
+
+        const input = document.getElementById("newMenu");
+        const newMenu = input.value.trim();
+
+        if (newMenu === "") {
+            alert("메뉴 이름을 입력해주세요.");
+            return;
+        }
+
+        if (lunchMenuList.includes(newMenu)) {
+            alert("이미 등록된 메뉴입니다.");
+            return;
+        }
+
+        lunchMenuList.push(newMenu);
+
+        input.value = "";
+
+        alert(newMenu + " 메뉴가 추가되었습니다.");
+
+        displayMenu();
+    }
+
+    // 전체 메뉴 목록 출력 함수
+    function displayMenu() {
+
+        const menuList = document.getElementById("menuList");
+
+        menuList.innerHTML = "";
+
+        lunchMenuList.forEach(function(menu, index) {
+
+            const li = document.createElement("li");
+
+            li.textContent = (index + 1) + ". " + menu;
+
+            menuList.appendChild(li);
+
+        });
+
+        document.getElementById("count").textContent =
+            "총 " + lunchMenuList.length +
+            "개의 메뉴가 등록되어 있습니다.";
+    }
+
+    // 웹페이지 실행 시 전체 메뉴 표시
+    displayMenu();
+
+</script>
+
+</body>
+</html>
